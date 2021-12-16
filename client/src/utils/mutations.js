@@ -44,9 +44,9 @@ export const SAVE_BOOK = gql`
       bookId
       authors
       description
+      title
       image
       link
-      title
     }
   }
 `;
