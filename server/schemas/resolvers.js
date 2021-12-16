@@ -72,15 +72,23 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    saveBook: async (parent, { bookId }, context) => {
+    saveBook: async (
+      parent,
+      { authors, description, bookId, image, link, title },
+      context
+    ) => {
       if (context.user) {
-        const savedBook = await User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { savedBooks: bookId } },
+          {
+            $push: {
+              savedBooks: { authors, description, bookId, image, link, title },
+            },
+          },
           { new: true }
         ).populate("savedBooks");
 
-        return savedBook;
+        return updatedUser;
       }
 
       throw new AuthenticationError("You need to be logged in!");
